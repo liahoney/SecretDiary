@@ -1,0 +1,10 @@
+.menu-area{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.nav-header  {
+    margin-right: 10px;
+    margin-top: 20px;
+    cursor: pointer;
+  }
