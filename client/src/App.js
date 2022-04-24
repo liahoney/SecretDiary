@@ -8,25 +8,26 @@ import Signup from "./page/Signup"
 import Mypage from './page/Mypage'
 import Mydiary from "./page/Mydiary"
 import './App.css';
+import Register from "./Register"
 
 function App() {
-  const [authenticate, setAuthenticate] = useState(false);
-  useEffect(() => {
-    console.log("aa", authenticate)
-  },[authenticate]);
+ 
   return (
-    <div >
+    <main className="App">
+      <Login />
+    </main>
+    // <div >
      
-     <Routes>
-     <Route path="/" element={<Login setAuthenticate={setAuthenticate}/>}/>
-     <Route path="/main" element={<Main/>}/>
-     <Route path="/diary" element={<Diary/>}/>
-     <Route path="/friends" element={<Friends/>}/>
-     <Route path="/signup" element={<Signup/>}/>
-     <Route path="/mypage" element={<Mypage/>}/>
-     <Route path="/mydiary" element={<Mydiary/>}/>
-     </Routes>
-    </div>
+    //  <Routes>
+    //  <Route path="/" element={<Login/>}/>
+    //  <Route path="/main" element={<Main/>}/>
+    //  <Route path="/diary" element={<Diary/>}/>
+    //  <Route path="/friends" element={<Friends/>}/>
+    //  <Route path="/signup" element={<Signup/>}/>
+    //  <Route path="/mypage" element={<Mypage/>}/>
+    //  <Route path="/mydiary" element={<Mydiary/>}/>
+    //  </Routes>
+    // </div>
   );
 }
 

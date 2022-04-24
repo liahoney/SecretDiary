@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      models.Users.hasMany(models.Comment,models.Contents{
+      models.Users.hasMany(models.Comment,models.Contents,{
         foreignKey: 'userid'
       })
     }
