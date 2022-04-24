@@ -1,7 +1,36 @@
-import React from 'react';
+import {React,  useState} from 'react';
 import styled from 'styled-components'
+import { useNavigate } from 'react-router-dom';
+import axios from '../api/axios';
 
 const Signup = () => {
+
+  const[user, setUser] = useState('');
+  const[nickName, setNickName] = useState('');
+  const[pwd, setPwd] = useState('');
+  const[verPwd, setVerPwd] = useState('');
+  const history = useNavigate;
+  
+  const signup = () => {
+    if (user === ''){
+      window.alert("잘못된 유저이름 형식입니다.")
+      return
+    } else if (pwd === verPwd){
+      axios
+        .post(`http://localhost:4000/signup`, {
+          user: user,
+          nickName: nickName,
+          password: pwd,
+        })
+        .then((res) => {
+          history.push('/page/Main')
+        })
+        .catch((err) => {})
+    }
+  }
+  const cancle = () => {
+    history('/page/Login')
+  }
   return (
     <div>
       <Container>
@@ -10,16 +39,32 @@ const Signup = () => {
             회원가입
           </Text>
             <SignupInput 
+              value={user}
               placeholder='이메일을 입력하세요'
+              onChange={(e) => setUser(e.target.value)}
             />
             <SignupInput
+              value={nickName}
               placeholder='닉네임을 입력하세요'
+              onChange={(e) => setNickName(e.target.value)}
             />
             <SignupInput
+              value={pwd}
               placeholder='비밀번호를 입력하세요'
+              type = 'password'
+              onChange={(e) => setPwd(e.target.value)}
             />
-            <SignupButton>
+            <SignupInput 
+              value={verPwd}
+              placeholder='비밀번호를 한번 더 입력해주세요'
+              type = 'password'
+              onChange={(e) => setVerPwd(e.target.value)}
+            />
+            <SignupButton onClick={signup}>
               회원가입
+            </SignupButton>
+            <SignupButton onClick={cancle}>
+              취소
             </SignupButton>
         </Box>
       </Container>
