@@ -15,18 +15,20 @@ function App() {
   return (
     <main className="App">
       <Login />
+      <Friends />
+      <Signup />
     </main>
     // <div >
      
-    //  <Routes>
-    //  <Route path="/" element={<Login/>}/>
-    //  <Route path="/main" element={<Main/>}/>
-    //  <Route path="/diary" element={<Diary/>}/>
-    //  <Route path="/friends" element={<Friends/>}/>
-    //  <Route path="/signup" element={<Signup/>}/>
-    //  <Route path="/mypage" element={<Mypage/>}/>
-    //  <Route path="/mydiary" element={<Mydiary/>}/>
-    //  </Routes>
+    //<Routes>
+      //<Route path="/" element={<Login/>}/>
+      //<Route path="/main" element={<Main/>}/>
+      //<Route path="/diary" element={<Diary/>}/>
+      //<Route path="/friends" element={<Friends/>}/>
+      //<Route path="/signup" element={<Signup/>}/>
+      //<Route path="/mypage" element={<Mypage/>}/>
+      //<Route path="/mydiary" element={<Mydiary/>}/>
+    //</Routes>
     // </div>
   );
 }

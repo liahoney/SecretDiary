@@ -6,7 +6,7 @@ import axios from '../api/axios';
 const Signup = () => {
 
   const[user, setUser] = useState('');
-  const[nickName, setNickName] = useState('');
+  const[userName, setUserName] = useState('');
   const[pwd, setPwd] = useState('');
   const[verPwd, setVerPwd] = useState('');
   const history = useNavigate;
@@ -19,7 +19,7 @@ const Signup = () => {
       axios
         .post(`http://localhost:4000/signup`, {
           user: user,
-          nickName: nickName,
+          userName: userName,
           password: pwd,
         })
         .then((res) => {
@@ -44,9 +44,9 @@ const Signup = () => {
               onChange={(e) => setUser(e.target.value)}
             />
             <SignupInput
-              value={nickName}
+              value={userName}
               placeholder='닉네임을 입력하세요'
-              onChange={(e) => setNickName(e.target.value)}
+              onChange={(e) => setUserName(e.target.value)}
             />
             <SignupInput
               value={pwd}
