@@ -1,7 +1,7 @@
 import {React,  useState} from 'react';
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom';
-import axios from '../api/axios';
+import axios from 'axios';
 
 const Signup = () => {
 
@@ -9,7 +9,7 @@ const Signup = () => {
   const[userName, setUserName] = useState('');
   const[pwd, setPwd] = useState('');
   const[verPwd, setVerPwd] = useState('');
-  const history = useNavigate;
+  const history = useNavigate();
   
   const signup = () => {
     if (user === ''){
