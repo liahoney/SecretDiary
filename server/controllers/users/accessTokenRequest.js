@@ -1,4 +1,4 @@
-const { isAuthorized } = require('../TokenFunction');
+const { isAuthorized } = require('../tokenFunctions');
 const { Users } = require('../../models');
 
 module.exports = (req, res) => {

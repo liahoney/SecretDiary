@@ -11,22 +11,46 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      models.Comments.belongsTo(models.Users, {
-        foreignKey: "userid"
-      })
-      models.Content.hasMany(models.Comment, {
-        foreignKey: 'contentid'
-      })
     }
   }
   Contents.init({
-    title: DataTypes.STRING,
-    weather: DataTypes.STRING,
-    content: DataTypes.STRING,
-    imgmain: DataTypes.STRING
+    id: {
+      allowNull:false,
+      autoIncrement:true,
+      primaryKey:true,
+      type: DataTypes.INTEGER
+    },
+    userid: {
+      allowNull:false,
+      type: DataTypes.INTEGER
+    },
+    title: {
+      allowNull: false,
+      type: DataTypes.STRING(128)
+    },
+    weather: {
+      allowNull: false,
+      type: DataTypes.STRING(128)
+    },
+    content: {
+      allowNull: false,
+      type: DataTypes.STRING(128)
+    },
+    imgmain: {
+      allowNull: false,
+      type: DataTypes.STRING(128)
+    },
+    created_at: {
+      type: DataTypes.DATE
+    },
+    updated_at: {
+      type: DataTypes.DATE
+    }
   }, {
     sequelize,
     modelName: 'Contents',
+    createdAt: 'created_at',
+    updatedAt: 'updated_at'
   });
   return Contents;
 };

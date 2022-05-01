@@ -22,7 +22,7 @@ const {
     }
   
     const { userId } = refreshTokenData;
-    User.findOne({ where: { userId } })
+    Users.findOne({ where: { userId } })
       .then((data) => {
         if (!data) {
           return res.json({
