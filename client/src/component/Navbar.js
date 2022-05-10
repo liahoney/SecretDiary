@@ -1,13 +1,19 @@
-import React, {useState} from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser } from '@fortawesome/free-regular-svg-icons'
-import { faBars} from "@fortawesome/free-solid-svg-icons";
+import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-regular-svg-icons";
+import { faBars, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
-const Navbar = ({authenticate, setAuthenticate}) => {
-const navigate = useNavigate();  
-  const menuList = ['일기쓰기', '나의일기', '친구목록', '마이페이지', '로그아웃']
+import { useNavigate } from "react-router-dom";
+import logo from "../../src/image/logo.svg"
+const Navbar = ({ authenticate, setAuthenticate }) => {
+ 
   let [width, setWidth] = useState(0);
+  let navigate = useNavigate();
+  const onCheckEnter = (event) => {
+    if (event.key === "Enter") {
+      navigate(`?q=${event.target.value}`);
+    }
+  };
   return (
     <div>
       <div className="side-menu" style={{ width: width }}>
@@ -15,9 +21,16 @@ const navigate = useNavigate();
           &times;
         </button>
         <div className="side-menu-list" id="menu-list">
-          {menuList.map((menu, index) => (
-            <button key={index}>{menu}</button>
-          ))}
+          
+            <li>
+          <button ><a href="/">로그인</a></button>     
+         <button> <a href="/diary">일기쓰기</a> </button>
+         <button><a href="/mydiary">나의일기</a> </button>
+          <button><a href="/friends">친구목록</a></button>
+          <button><a href="/mypage">마이페이지</a></button>
+          <button><a href="/logout">로그아웃</a></button>
+          </li>
+          
         </div>
       </div>
       <div className="nav-header">
@@ -27,57 +40,43 @@ const navigate = useNavigate();
         {authenticate ? (
           <div onClick={() => setAuthenticate(false)}>
             <FontAwesomeIcon icon={faUser} />
-            <span>로그아웃에헤헹</span>
+            <span>로그아웃</span>
           </div>
         ) : (
           <div onClick={() => navigate("/")}>
             <FontAwesomeIcon icon={faUser} />
-            <span>로그인하러가기</span>
+            <span>로그인</span>
           </div>
         )}
       </div>
+
       <div className="nav-logo">
         <Link to="/">
-          <img
+          <img src={logo}
             width={100}
-            src="https://littledeep.com/wp-content/uploads/2019/03/google_logo_download_thumbnail.png"
+            
           />
         </Link>
       </div>
       <div class="nav-menu-area">
         <ul className="menu">
-          {menuList.map((menu, index) => (
-            <li>
-              <a href="#" key={index}>
-                {menu}
-              </a>
-            </li>
-          ))}
+          <li>
+          <a href="/">로그인</a>
+          <a href="/diary">일기쓰기</a>
+          <a href="/mydiary">나의일기</a>
+          <a href="/friends">친구목록</a>
+          <a href="/mypage">마이페이지</a>
+          <a href="/logout">로그아웃</a>
+          </li>
         </ul>
+
+        <div className="search-box">
+          <FontAwesomeIcon icon={faSearch} />
+          <input type="text" placeholder="친구검색" onKeyPress={onCheckEnter} />
         </div>
-
-
-    {/* <div>
-      <div className="menu-area">
-        <ul className="menu-list">
-          {menulist.map(menu => <li>{menu}</li>)}
-        </ul>
       </div>
-      <div>
-      <div className="nav-header">
-        
-            <div onClick={()=> navigate("/")}>
-            <FontAwesomeIcon icon={faUser}/>
-            <span>로그아웃*</span>
-            </div>
-        
-       </div>
-      </div>
-    </div> */}
     </div>
-    
-
   );
-}
+};
 
 export default Navbar;

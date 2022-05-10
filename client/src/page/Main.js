@@ -1,11 +1,12 @@
 import React from 'react';
 import Navbar from '../component/Navbar';
+import main from '../image/main.svg'
 
 const Main = () => {
   return (
     <div>
       <Navbar/>
-      메인페이지
+      <img src={main} alt="main-image"></img>
     </div>
   );
 }
