@@ -45,7 +45,7 @@ const Signup = () => {
             />
             <SignupInput
               value={userName}
-              placeholder='닉네임을 입력하세요'
+              placeholder='이름을 입력하세요'
               onChange={(e) => setUserName(e.target.value)}
             />
             <SignupInput

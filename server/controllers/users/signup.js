@@ -1,8 +1,8 @@
 const { Users } = require('../../models');
-const { createAccessToken } = require('../tokenFunctions');
+const { generateAccessToken } = require('../tokenFunctions');
 
 module.exports = async (req, res) => {
-    const accessToken = createAccessToken(req.body.password)
+    const accessToken = generateAccessToken(req.body.password)
     const [userinfo, created] = await Users.findOrCreate({
         where: {
             email: req.body.email

@@ -40,6 +40,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.STRING(128)
     },
+    // isPublic: {
+    //   allowNull: false,
+    //   type: DataTypes.boolean()
+    // },
     created_at: {
       type: DataTypes.DATE
     },
