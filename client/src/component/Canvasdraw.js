@@ -1,4 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import axios from "axios";
+import styled from 'styled-components';
 
 const colors = [
   "red",
@@ -12,7 +14,7 @@ const colors = [
   "gold",
 ]
 
-function Canvasdraw() {
+export default function Canvasdraw() {
   const canvasRef = useRef(null);
   const ctx = useRef(null);
 
@@ -77,14 +79,22 @@ function Canvasdraw() {
     draw(e.pageX, e.pageY)
   }
 
+  
+  // const handleSaveClick = () => {
+  //   download();
+  //   const data = firstCanvas.current.getSaveData();
+  // }
+
+
   return (
+    <Main>
     <div className="App">
       <canvas
         style={{
-          border: "1px solid #000"
+          border: "3px solid #000"
         }}
-        width={1000}
-        height={1000}
+        width={1370}
+        height={500}
         ref={canvasRef}
         onMouseDown={onMouseDown}
         onMouseUp={onMouseUp}
@@ -102,10 +112,51 @@ function Canvasdraw() {
           )
         }
       </select>
-      <button onClick={clear}>Clear</button>
-      <button onClick={download}>Download</button>
+     
+      <Button onClick={clear}>Clear</Button>
+      <Button onClick={download}>Download</Button>
+      
     </div>
+    </Main>
   );
 }
 
-export default Canvasdraw;
+
+
+const Main = styled.div`
+	height: 100%;
+	margin: 1rem 1rem 1rem 1rem;
+	display: flex;
+	flex-direction: column;
+	@media only screen and (max-width: 480px) {
+		height: 80%;
+	}
+`;
+
+
+
+// const Buttons = styled.div`
+// 	flex-grow: 1;
+// 	display: flex;
+// 	justify-content: flex-end;
+// `;
+
+const Button = styled.button`
+	border: 2px solid black;
+	background: #f6f6ee;
+	margin-right: 0.1rem;
+  margin-left: 1rem;
+	font-size: 0.8rem;
+	font-weight: bold;
+	:hover {
+		cursor: pointer;
+		background: black;
+		color: #f6f6ee;
+		transition: all 1s;
+	}
+	@media only screen and (max-width: 480px) {
+		font-size: 0.8rem;
+	}
+`;
+
+

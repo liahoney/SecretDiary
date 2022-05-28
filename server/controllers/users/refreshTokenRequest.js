@@ -21,8 +21,8 @@ const {
       });
     }
   
-    const { userId } = refreshTokenData;
-    Users.findOne({ where: { userId } })
+    const { email } = refreshTokenData;
+    Users.findOne({ where: { email } })
       .then((data) => {
         if (!data) {
           return res.json({
