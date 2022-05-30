@@ -37,6 +37,7 @@ app.get('/', (req, res) => {
   res.send('health check');
 });
 
+
 app.post('/signup', (req, res) => {
   console.log('req.body');
   res.send('signup test');
@@ -57,6 +58,7 @@ app.post('/logout', (req, res) => {
   res.send('logout test yeah');
 });
 
+
 app.post('/signup', controllers.signup);
 app.post('/login', controllers.login);
 app.post('/logout', controllers.logout)
@@ -64,6 +66,11 @@ app.post('/logout', controllers.logout)
 
 
 
+
+
+
+// app.get('/accesstokenrequest', controllers.accessTokenRequest);
+// app.get('/refreshtokenrequest', controllers.refreshTokenRequest);
 
 // app.get('/accesstokenrequest', controllers.accessTokenRequest);
 // app.get('/refreshtokenrequest', controllers.refreshTokenRequest);
@@ -81,5 +88,6 @@ if (fs.existsSync('./key.pem') && fs.existsSync('./cert.pem')) {
 } else {
   server = app.listen(HTTPS_PORT, () => console.log('HTTP'));
 }
+
 
 module.exports = server;

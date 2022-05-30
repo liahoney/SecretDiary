@@ -17,6 +17,7 @@
     },
     "homepage": "https://github.com/hosik-GitHub/SecretDiary#readme",
     "dependencies": {
+        "prop-types": "^15.8.1",
         "sequelize": "^6.19.0"
     }
 }

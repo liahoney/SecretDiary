@@ -21,8 +21,10 @@
 //       });
 //     }
   
+
 //     const { userId } = refreshTokenData;
 //     Users.findOne({ where: { userId } })
+
 //       .then((data) => {
 //         if (!data) {
 //           return res.json({
