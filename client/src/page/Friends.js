@@ -11,10 +11,7 @@ const Friends = () => {
 export default Friends;
 
 
-<<<<<<< HEAD
-=======
 
->>>>>>> b82056d ([frontend&backend] Modified developing environment)
 // import React, { useRef, useState } from 'react';
 // import FriendList from '../component/FriendList';
 
