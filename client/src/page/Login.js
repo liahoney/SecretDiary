@@ -21,8 +21,8 @@ const url =
 const Login = ({handleResponseSuccess, setIsLogin, setAuthenticate}) => {
   const navigate = useNavigate();
   
-  console.log('ENV?', NODE_ENV);
-  console.log('url?', url);
+  // console.log('ENV?', NODE_ENV);
+  // console.log('url?', url);
   const { setAuth } = useContext(AuthContext);
   const userRef = useRef();
   const errRef = useRef();
@@ -42,17 +42,16 @@ const Login = ({handleResponseSuccess, setIsLogin, setAuthenticate}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("login user function issue")
+    // console.log("login user function issue")
     setAuthenticate(true);
     navigate("/")
 
     try {
       const response = await axios.post(
-<<<<<<< HEAD
-        `${url}/signup`,
-=======
-        `${url}/login`,
->>>>>>> b82056d ([frontend&backend] Modified developing environment)
+
+        // `${url}/login` ,
+        `http://localhost:80/login`,
+
         JSON.stringify({ user, pwd }),
 
         {
@@ -60,27 +59,25 @@ const Login = ({handleResponseSuccess, setIsLogin, setAuthenticate}) => {
           withCredentials: true,
         }
       );
-      console.log(JSON.stringify({ user, pwd }));
-      console.log(JSON.stringify(response?.data));
-      console.log(JSON.stringify(response));
+      // console.log(JSON.stringify({ user, pwd }));
+      // console.log(JSON.stringify(response?.data));
+      // console.log(JSON.stringify(response));
       
       const accessToken = response?.data?.accessToken;
       const roles = response?.data?.roles;
       setAuth({ user, pwd, roles, accessToken });
-      console.log('user?',{user})
+      // console.log('user?',{user})
       setUser('');
       setPwd('');
       setSuccess(true);
-<<<<<<< HEAD
+
+      // console.log('hellohiworld')
+      // console.log('1234')
       setIsLogin(true)
+      // console.log('love',setIsLogin)
       handleResponseSuccess()
-=======
-      console.log('hellohiworld')
-      setIsLogin(true)
-      console.log('love',setIsLogin)
-      handleResponseSuccess()
-      console.log('heart')
->>>>>>> b82056d ([frontend&backend] Modified developing environment)
+      // console.log('heart')
+
     } catch (err) {
       if (!err?.response) {
         setErrMsg('No Server Response');

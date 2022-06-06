@@ -34,7 +34,10 @@ const Signup = () => {
       return;
     } else if (pwd === verPwd) {
       axios
-        .post(`${url}/signup`, {
+        .post(
+          // `${url}/signup`, 
+          `http://localhost:80/signup`,
+          {
           user: user,
           userName: userName,
           password: pwd,
