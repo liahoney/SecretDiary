@@ -57,7 +57,7 @@ const Navbar = ({ authenticate, setAuthenticate , handleLogout, isLogin}) => {
         </nav>
         }
     </span>
-        {/* {authenticate ? (
+        {isLogin ? (
           <div onClick={() => setAuthenticate(false)}>
             <FontAwesomeIcon icon={faUser} />
             <span>로그아웃</span>
@@ -67,7 +67,7 @@ const Navbar = ({ authenticate, setAuthenticate , handleLogout, isLogin}) => {
             <FontAwesomeIcon icon={faUser} />
             <span>로그인이다</span>
           </div>
-        )} */}
+        )}
       </div>
 
       <div className="nav-logo">
@@ -90,10 +90,10 @@ const Navbar = ({ authenticate, setAuthenticate , handleLogout, isLogin}) => {
           </li>
         </ul> */}
 
-        <div className="search-box">
-          <FontAwesomeIcon icon={faSearch} />
-          <input type="text" placeholder="친구검색" onKeyPress={onCheckEnter} />
-        </div>
+        {/* <div className="search-box"> */}
+          {/* <FontAwesomeIcon icon={faSearch} /> */}
+          {/* <input type="text" placeholder="친구검색" onKeyPress={onCheckEnter} /> */}
+        {/* </div> */}
       </div>
     </div>
   );

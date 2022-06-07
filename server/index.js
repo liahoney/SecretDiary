@@ -53,11 +53,16 @@ app.get('/', (req, res) => {
   res.send('health check');
 });
 
+
+
 app.post('/login',  (req,response) => {
   const sql = "SELECT * FROM users WHERE email = ? AND password = ?"
+  console.log('req.body.user',req.body.user)
+  console.log('req.body.pwd',req.body.pwd)
   con.query(sql,[req.body.user, req.body.pwd],function(err,result, fields){
     if(err) throw err;
     console.log('result',result)
+    console.log('response.data',response.data)
     response.send(result)
   });
 });
@@ -70,9 +75,9 @@ app.post('/signup', (req,res) => {
     if(err) throw err;
     // console.log('fields',fields);
     // console.log('result', result);
-    // console.log('req: ',req.body);
-    console.log('res',res)
-    res.send('등록이 완료 되었습니다.')
+    console.log('req: ',req.body);
+    // console.log('res',res)
+    res.send('h test')
   })
 })
 app.get('/signup', (req,res) => {
@@ -82,8 +87,8 @@ app.get('/signup', (req,res) => {
     if(err) throw err;
     // console.log('fields',fields);
     // console.log('result', result);
-    // console.log('req: ',req.body);
-    console.log('res',res)
+    console.log('req: ',req.body);
+    // console.log('res',res)
     res.send('등록이 완료 되었습니다.')
   })
 })
@@ -117,7 +122,7 @@ app.post('/logout', (req, res) => {
 app.post('/diary/cdiary', (req, res) => {
   const sql = "INSERT INTO Contents(id,imgmain,content,weather,title, createdAt, updatedAt) values(?,?,?,?,?,now(),now())"
   
-  con.query(sql,[ req.body.id, req.body.imgmain, req.body.content,  req.body.weather, req.body.title], function(err, result, fields){
+  con.query(sql,[ req.body.id, req.body.imgmain, req.body.content,  req.body.weather, req.body.title, req.body.createdAt], function(err, result, fields){
     if(err) throw err;
     // console.log(sql)
     console.log('req.body', req.body)
@@ -126,6 +131,29 @@ app.post('/diary/cdiary', (req, res) => {
     res.send('등록이 완료 되었습니다.')
   })
 });
+
+
+// 다이어리 카드 불러오기 시작
+app.get('/getDiary', (req,res)=> {
+  const sql = "select * from contents"
+  con.query(sql,function(err,result, fields){
+    if(err) throw err;
+    res.send(result)
+  });
+  });
+  // 다이어리 카드 불러오기 끝
+// app.get('/diary/cdiary', (req,res) => {
+//   const sql = "SELECT * From `contents`"
+  
+//   con.query(sql,[req.body.title, req.body.content,  req.body.imgmain, req.body.weather], function(err, result, fields){
+//     if(err) throw err;
+//     // console.log('fields',fields);
+//     // console.log('result', result);
+//     // console.log('req: ',req.body);
+//     console.log('res',res)
+//     res.send(req.body)
+//   })
+// })
 app.post('/diary/udiary', (req, res) => {
   console.log('udiary?');
   res.send('udiary test');
@@ -187,9 +215,10 @@ const upload = multer({
 
 app.post("/imageUpload", upload.single("file"), function(req, res, next) {
   res.send({
-    fileName: req.file.filename
+    filePath: req.file.filename
   });
 });
+
 
 // app.get('/accesstokenrequest', controllers.accessTokenRequest);
 // app.get('/refreshtokenrequest', controllers.refreshTokenRequest);

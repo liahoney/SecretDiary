@@ -16,7 +16,7 @@ import axios from 'axios'
 function App() {
   let [authenticate, setAuthenticate] = useState(false);
   const [userimage, setUserimage] = useState('default.png')
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(Boolean(window.sessionStorage.getItem('id')));
   const history = useNavigate();
   // const handleUserinfo = () => {
   //   setUserinfo({
@@ -33,7 +33,7 @@ function App() {
     userId: ''
   })
   const handleLogout = () => {
-    axios.post('https://server.secretdiary.org/signup').then((res) => {
+    axios.post('https://server.secretdiary.org/logout').then((res) => {
       sessionStorage.setItem('user', '')
       sessionStorage.setItem('pwd', '')
       sessionStorage.setItem('userName', '')
@@ -41,6 +41,8 @@ function App() {
       history('/');
     });
   };
+
+
   const handleResponseSuccess = (res) => {
     history.push("/main")
   };
@@ -60,6 +62,7 @@ function App() {
         isLogin={isLogin}
         setIsLogin={setIsLogin}
         handleResposeSuccess={handleResponseSuccess}
+        handleLogout={handleLogout}
          />} />
         <Route path='/main' element={<Main />} />
         <Route path='/diary' element={<Diary
