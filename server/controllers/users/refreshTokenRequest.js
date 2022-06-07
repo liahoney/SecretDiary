@@ -21,13 +21,9 @@
 //       });
 //     }
   
-<<<<<<< HEAD
-//     const { email } = refreshTokenData;
-//     Users.findOne({ where: { email } })
-=======
+
 //     const { userId } = refreshTokenData;
 //     Users.findOne({ where: { userId } })
->>>>>>> b82056d ([frontend&backend] Modified developing environment)
 //       .then((data) => {
 //         if (!data) {
 //           return res.json({

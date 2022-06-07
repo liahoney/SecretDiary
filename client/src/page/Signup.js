@@ -36,7 +36,7 @@ const Signup = () => {
       axios
         .post(
           // `${url}/signup`, 
-          `http://localhost:80/signup`,
+          `https://server.secretdiary.org/signup`,
           {
           user: user,
           userName: userName,

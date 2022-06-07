@@ -31,6 +31,20 @@ const {
   //   NODE_ENV === 'development' ? REACT_APP_EC2_HTTP : REACT_APP_API_DOMAIN;
 
 function Diary() {
+//날짜 함수 시작
+const Today = () => {
+    const year = new Date().getFullYear();
+    const month = new Date().getMonth() + 1;
+    const day = new Date().getDate();
+    const week = ["일","월","화","수","목","금","토"];
+    const dayOfWeek = week[new Date(`${year}-${month}-${day}`).getDay()];
+    return `${year}년 ${month}월 ${day}일 ${dayOfWeek}요일`;
+}
+const [diarydDate, setDiarydDate] = useState(Today());
+//날짜 함수 끝
+
+const userImage = ''
+
   // 캔버스  함수 시작
   const canvasRef = useRef(null);
   const ctx = useRef(null);
@@ -52,7 +66,7 @@ function Diary() {
     if (mouseDown) {
       ctx.current.beginPath();
       ctx.current.strokeStyle = selectedColor;
-      ctx.current.lineWidth = 10;
+      ctx.current.lineWidth = 20
       ctx.current.lineJoin = 'round';
       ctx.current.moveTo(lastPosition.x, lastPosition.y);
       ctx.current.lineTo(x, y);
@@ -72,7 +86,14 @@ function Diary() {
     const blobURL = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = blobURL;
+    
     link.download = "image.png";
+    console.log('image = ',image)
+    console.log('link.href = ',link.href);
+    console.log('blob',blob);
+    console.log('blobURL = ',blobURL);
+    console.log('link = ',link)
+    console.log(URL)
     link.click();
   }
 
@@ -83,7 +104,9 @@ function Diary() {
   const onMouseDown = (e) => {
     setPosition({
       x: e.pageX,
-      y: e.pageY
+      'a':console.log('x:', e.pageX),
+      y: e.pageY,
+      'b':console.log('y:',e.pageY)
     })
     setMouseDown(true)
   }
@@ -93,7 +116,7 @@ function Diary() {
   }
 
   const onMouseMove = (e) => {
-    draw(e.pageX, e.pageY)
+    draw(e.pageX , e.pageY-400)
   }
 
     // const handleSaveClick = () => {
@@ -113,23 +136,64 @@ function Diary() {
     : (process.env.NODE_ENV === 'development' 
     ? 'http://localhost:80' : 'https://server.secretdiary.org');
 
-  const register = () => {
+  const register =async () => {
     console.log('ENV? = ', NODE_ENV);
     console.log('url? = ', url);
+    const image = canvasRef.current.toDataURL('image/png');
+    // console.log('image = ',image)
+    const byteString = window.atob(image.split(',')[1]);
+    const array = [];
+      for (var i = 0; i < byteString.length; i++) {
+        array.push(byteString.charCodeAt(i));
+    }
+    console.log('array',array)
+    const metadata = {
+      type: 'image/png'
+    };
+    const myBlob = new Blob([new Uint8Array(array)], {type: 'image/png'});
+     console.log('myBlob',myBlob)
+    // const blob = await (await fetch(image)).blob();
 
-       axios
-        .post(`${url}/diary/cdiary`, {
-            title: title,
-            content: content,
-            weather: currentClick
-        })
-        .then(() => {
-          history('/');
-        })
-        .catch((e) => console.error(e));
+    const file = new File([myBlob], "blobtofile.png",metadata);
+    console.log('file',file)
     
-  };
+    const formData = new FormData();
+
+    // const blob = await (await fetch(image)).blob();
+    // const blobURL = URL.createObjectURL(blob);
+    formData.append('file', file)
+    // formData.append('title', title)
+    // formData.append('content',content)
+    // formData.append('weather', currentClick)
+    // formData.append('created_at', diarydDate)
+    // formData.append('imgmain',filePath)
+
+
+
+  //   const headers = {
+  //     "Content-Type": "multipart/form-data",
+  //   };
+      
+    
+  // };
   
+  axios.post(`${url}/imageUpload`, formData)
+  .then( res => {
+    console.log('res = ',res)
+    axios
+    .post(`${url}/diary/cdiary`, {
+      title: title,
+      content: content,
+      weather: currentClick,
+      created_at: diarydDate,
+      imgmain: res.data.filePath
+  }
+)})
+    .then(() => {
+      history('/mydiary');
+    })
+    .catch((e) => console.error(e))
+  }
 
 /////// 날짜 함수 끝나는 곳
 const [currentClick, setCurrentClick] = React.useState(null);
@@ -171,7 +235,7 @@ return (
         <Main1>
             <DateWeather>
                 <Todaydate theme={true}>
-                    <div>{null}</div>
+                    <div>{diarydDate}</div>
                 </Todaydate>
                 <Weather theme={true}>
                     <Image>
@@ -200,7 +264,7 @@ return (
             border: "3px solid #000"
             }}
             width={1370}
-            height={500}
+            height={1370}
             ref={canvasRef}
             onMouseDown={onMouseDown}
             onMouseUp={onMouseUp}
