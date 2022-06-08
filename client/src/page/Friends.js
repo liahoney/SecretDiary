@@ -1,14 +1,14 @@
-import React from 'react';
-import Stars from '../Friend/Stars'
-const Friends = () => {
-  return (
-    <div>
-      <Stars></Stars>
-    </div>
-  );
-}
+// import React from 'react';
+// import Stars from '../Friend/Stars'
+// const Friends = () => {
+//   return (
+//     <div>
+//       <Stars></Stars>
+//     </div>
+//   );
+// }
 
-export default Friends;
+// export default Friends;
 
 
 

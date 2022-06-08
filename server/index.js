@@ -16,6 +16,7 @@ const mysql = require('mysql');
 const path = require('path')
 const bodyParser = require('body-parser');
 const { getMaxListeners } = require('process');
+const { response } = require('express');
 const con = mysql.createConnection({
   host: 'localhost',
   user: 'root',
@@ -52,7 +53,23 @@ app.get('/', (req, res) => {
   console.log('health check');
   res.send('health check');
 });
-
+app.post('/getUser', (req,res) => {
+  console.log('req.body',req.body)
+  const sql = "SELECT * FROM users WHERE id = ?"
+  con.query(sql,[req.body.id],function(err,result, fields){
+    if(err) throw err;
+    res.send(result)
+  });
+})
+app.put('/userupdate',(req,res)=>{
+  console.log('req',req.body)
+  var sql = "UPDATE users SET password = ?, name = ? WHERE id = ?";
+  con.query(sql,[req.body.password, req.body.name, req.body.id], function(err,result,fields){
+    if(err) throw err;
+    console.log('res',res)
+    res.send('수정이 완료 되었습니다.')
+  })
+})
 
 
 app.post('/login',  (req,response) => {

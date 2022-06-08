@@ -4,46 +4,38 @@ import Navbar from './component/Navbar';
 import Login from './page/Login';
 import Main from './page/Main';
 // import Diary from './page/Diary';
-import Diary from './page/Diary'
-import Friends from './page/Friends';
+// import Friends from './page/Friends';
 import Signup from './page/Signup';
 import Mypage from './page/Mypage';
 import Mydiary from './page/Mydiary';
+import Diary from './page/Diary'
+// import Test from './page/Test';
 import './App.css';
 import axios from 'axios'
 
-
 function App() {
   let [authenticate, setAuthenticate] = useState(false);
-  const [userimage, setUserimage] = useState('default.png')
-  const [isLogin, setIsLogin] = useState(Boolean(window.sessionStorage.getItem('id')));
+  const [isLogin, setIsLogin] = useState(true);
   const history = useNavigate();
-  // const handleUserinfo = () => {
-  //   setUserinfo({
-  //     user: sessionStorage.getItem('user'),
-  //     pwd: sessionStorage.getItem('pwd'),
-  //     userName: sessionStorage.getItem('userName'),
-      
-  //   }, () => console.log(userinfo))
-  // }
-
-  const [comment, setComment] = useState({
-    content: '',
-    movieId: '',
-    userId: ''
-  })
+  const [userinfo, setUserinfo] = useState([]);
+  const handleUserinfo = () => {
+    setUserinfo({
+      id: sessionStorage.getItem('id'),
+      name: sessionStorage.getItem('name'),
+      email: sessionStorage.getItem('email'),
+      created_at: sessionStorage.getItem('created_at'),
+      password : sessionStorage.getItem('password')
+    }, () => console.log(userinfo))
+  }
   const handleLogout = () => {
-    axios.post('https://server.secretdiary.org/logout').then((res) => {
-      sessionStorage.setItem('user', '')
+      sessionStorage.setItem('id', '')
       sessionStorage.setItem('pwd', '')
-      sessionStorage.setItem('userName', '')
+      sessionStorage.setItem('name', '')
       setIsLogin(false);
       history('/');
-    });
   };
-
-
   const handleResponseSuccess = (res) => {
+    setIsLogin(true);
     history.push("/main")
   };
  
@@ -62,31 +54,16 @@ function App() {
         isLogin={isLogin}
         setIsLogin={setIsLogin}
         handleResposeSuccess={handleResponseSuccess}
-        handleLogout={handleLogout}
+        handleUserinfo = {handleUserinfo}
          />} />
-        <Route path='/main' element={<Main />} />
-        <Route path='/diary' element={<Diary
-        userimage={userimage}
-        setUserimage={setUserimage}
-        handleLogout={handleLogout}
-        handleResponseSuccess={handleResponseSuccess}
-        setIsLogin={setIsLogin}
-        comment={comment}
-        setComment={setComment} />} />
-        <Route path='/friends' element={<Friends />} />
+        <Route path='/main' element={<Main isLogin = {isLogin} userinfo = {userinfo}/>} />
+        <Route path='/diary' element={<Diary />} />
+        {/* <Route path='/friends' element={<Friends />} /> */}
         <Route path='/signup' element={<Signup
          isLogin={isLogin} />} />
-        <Route path='/mypage' element={<Mypage 
-        handleLogout={handleLogout}
-        handleResponseSuccess={handleResponseSuccess}
-        setIsLogin={setIsLogin} 
-        />} />
-        <Route path='/mydiary' element={<Mydiary 
-        setUserimage={setUserimage}
-        userimage={userimage}
-        handleLogout={handleLogout}
-        handleResponseSuccess={handleResponseSuccess}
-        setIsLogin={setIsLogin} />} />
+        <Route path='/mypage' element={<Mypage userinfo = {userinfo}
+        handleLogout={handleLogout} />} />
+        <Route path='/mydiary' element={<Mydiary />} />
       </Routes>
     </div>
   );

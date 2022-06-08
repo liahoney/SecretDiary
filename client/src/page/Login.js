@@ -14,11 +14,13 @@ const {
 //   NODE_ENV === 'development' ? REACT_APP_EC2_HTTP : REACT_APP_API_DOMAIN;
 
 const url =
-  process.env.NODE_ENV === 'production'
-    ? 'https://client.secretdiary.org'
-    : 'https://server.secretdiary.org';
+process.env.NODE_ENV === 'production'
+  ? 'https://server.secretdiary.org'
+  : (process.env.NODE_ENV === 'development' 
+  ? 'http://localhost:80' : 'https://server.secretdiary.org');
 
-const Login = ({handleResponseSuccess, setIsLogin, setAuthenticate, isLogin}) => {
+const Login = ({setAuthenticate, isLogin, handleResponseSuccess, setIsLogin, handleUserinfo }) => {
+  // console.log('isLogin',isLogin)
   const navigate = useNavigate();
   
   // console.log('ENV?', NODE_ENV);
@@ -27,14 +29,13 @@ const Login = ({handleResponseSuccess, setIsLogin, setAuthenticate, isLogin}) =>
   const userRef = useRef();
   const errRef = useRef();
 
+  const [nickName, setNickName] = useState('');
   const [user, setUser] = useState('');
   const [pwd, setPwd] = useState('');
   const [errMsg, setErrMsg] = useState('');
-  // const [success, setSuccess] = useState(false);
-  const [errormessage, setErrormessage] = useState('')
-  const [errormessage2, setErrormessage2] = useState('')
+  const [success, setSuccess] = useState(false);
+  const [ id, setId] = useState(null)
 
-  
   // useEffect(() => {
   //   userRef.current.focus();
   // }, []);
@@ -49,79 +50,79 @@ const Login = ({handleResponseSuccess, setIsLogin, setAuthenticate, isLogin}) =>
     setAuthenticate(true);
     navigate("/")
 
-    if(!errormessage){ 
-      axios.post(
-
-        // `${url}/login` ,
-        `https://server.secretdiary.org/login`,{
-          user: user,
-          pwd: pwd
-        })
-      
-      
-      .then(res => {
-        // console.log('res',res.data)
-        console.log('res.data.length=',res.data.length)
-        console.log('isLogin', isLogin)
-        console.log('res',res)
-        if(res.data.length > 0){
-          console.log('it is logined')
-          sessionStorage.setItem('id', res.data.id);
-          sessionStorage.setItem('email', res.data.email);
-          sessionStorage.setItem('name',res.data.name);
-          sessionStorage.setItem('nickname', res.data.nickname)
-          setIsLogin(true)
-          handleResponseSuccess()
-        }else{
-          console.log('it is not logined')
-          sessionStorage.setItem('id', '');
-          sessionStorage.setItem('email', '');
-          sessionStorage.setItem('name', '');
-          sessionStorage.setItem('nickname', '')
-          setIsLogin(false)
+    try {
+      const response = await axios.post(
+        `${url}/login`,{
+          user : user,
+          pwd : pwd
+        },
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true,
         }
-      }) 
-      .catch(error => setErrormessage2('비밀번호가 일치하지 않습니다'));
-    }
-  }
-      // console.log(JSON.stringify({ user, pwd }));
-      // console.log(JSON.stringify(response?.data));
-      // console.log(JSON.stringify(response));
+      ).then((res)=>{
+        if(res.data.length == 0){
+          setUser('');
+          setPwd('');
+          setSuccess(false);
+          setIsLogin(false)
+        }else{
+          axios.post(
+            `${url}/getUser`,{
+              id : res.data[0].id
+            },
+            {
+              headers: { 'Content-Type': 'application/json' },
+              withCredentials: true,
+            }
+          ).then(res => {
+            console.log('res = ',res.data[0].password)
+            setSuccess(true);
+            setIsLogin(true)
+            setNickName(res.data[0].name)
+            sessionStorage.setItem('id',res.data[0].id)
+            sessionStorage.setItem('name',res.data[0].name)
+            sessionStorage.setItem('email',res.data[0].email)
+            sessionStorage.setItem('created_at',res.data[0].created_at)
+            sessionStorage.setItem('password',res.data[0].password)
+            handleUserinfo()    
+          })
+          .catch(function(error) {
+            console.log("실패");
+          })
+         
+        }
+
+      }
+      );
+
       
       // const accessToken = response?.data?.accessToken;
       // const roles = response?.data?.roles;
-      // setAuth({ user, pwd, roles, accessToken });
-      // // console.log('user?',{user})
-      // setUser('');
-      // setPwd('');
-      // setSuccess(true);
+      
+      
+     
+      handleResponseSuccess()
+    } catch (err) {
+      if (!err?.response) {
+        setErrMsg('No Server Response');
+      } else if (err.response?.status === 400) {
+        setErrMsg('Missing Username or Password');
+      } else if (err.response?.status === 401) {
+        setErrMsg('Unauthorized');
+      } else {
+        setErrMsg('Login Failed');
+      }
+      // errRef.current.focus();
 
-      // // console.log('hellohiworld')
-      // // console.log('1234')
-      // setIsLogin(true)
-      // // console.log('love',setIsLogin)
-      // handleResponseSuccess()
-      // console.log('heart')
+    }
+  };
 
-    // } catch (err) {
-    //   if (!err?.response) {
-    //     setErrMsg('No Server Response');
-    //   } else if (err.response?.status === 400) {
-    //     setErrMsg('Missing Username or Password');
-    //   } else if (err.response?.status === 401) {
-    //     setErrMsg('Unauthorized');
-    //   } else {
-    //     setErrMsg('Login Failed');
-    //   }
-    //   errRef.current.focus();
-    // }
-  
-  
   return (
     <>
-      {isLogin ? (
+      {success ? (
         <section>
-          <h1>You are logged in!</h1>
+          <h1>{nickName} is logged in!</h1>
           <br />
           <p>
             <a href='/main'>Go to Home</a>
@@ -169,9 +170,8 @@ const Login = ({handleResponseSuccess, setIsLogin, setAuthenticate, isLogin}) =>
           </p>
         </section>
       )}
-    </>)
-    
-  
+    </>
+  );
 };
 
 export default Login;

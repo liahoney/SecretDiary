@@ -1,136 +1,99 @@
 import React, { useReducer, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+// import { useHistory } from 'react-router-dom'
+
 import NavBar from '../component/Navbar'
 import axios from 'axios';
 
 
-const MyPage = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [changePassword, setChangePassword] = useState(false);
-  const [password, setPassword] = useState('');
-  const [checkPassword, setCheckPassword] = useState(true);
-  const [verify, setVerify] = useState('');
+const MyPage = (userinfo,handleLogout) => {
+  
   const history = useNavigate();
-  const user = {
-    'id': 'yangyunho',
-    'password' : '123456'
-  }
+const [updateinfo, setUpdateinfo] = useState({
+  password: '',
+  confirmPassword: '',
+  name: ''
+});
 
-  const modify = () => {
-    axios.put(`/user`, {
-      id: user.id,
-      password: user.password
-    })
-    .then(res => {
+const [password, setPassword] = useState(sessionStorage.getItem('password'))
+const [name, setName] = useState(sessionStorage.getItem('name'))
+const [id, setId] = useState(sessionStorage.getItem('id'))
+const [email, setEmail] = useState(sessionStorage.getItem('email'))
+const [created_at, setCreated_at] = useState(sessionStorage.getItem('created_at'))
 
-    })
-  };
-  const cancel = () => {
-    history(-1);
-  };
-  const modalIsOpen = () => {
-    setIsOpen(!isOpen);
-  };
-  const withdraw = () => {
-    axios.delete(`/user`, {
-      id: user.id,
-      password: user.password
-    })
-    .then(res => {
-      history('/')
-    })
+const [errormessage, setErrormessage] = useState('')
+const [errormessage2, setErrormessage2] = useState('')
+
+
+const handleInputValue = (key) => (e) => {
+  setUpdateinfo({ ...updateinfo, [key]: e.target.value });
+  validate()
+}
+const validate = () => {
+  if (updateinfo.password.length < 6 || updateinfo.password.length > 12) {
+    setErrormessage('비밀번호는 6자리 이상 12자리 이하입니다')
+  } else if (updateinfo.password !== updateinfo.confirmPassword) {
+    setErrormessage('비밀번호가 일치하지 않습니다')
+  } else if (updateinfo.nickname.length < 1 || updateinfo.nickname.length > 6) {
+    setErrormessage('닉네임은 1자리 이상 6자리 이하입니다')
+  } else {
+    setErrormessage('')
   }
-  const modalPassword = () => {
-    setChangePassword(!changePassword);
-  };
-  const checkHandler = () => {
-    axios.get(`http://localhost:3001/user`, {
-      params: {
-        id: user.id
-      }
+}
+const url =
+process.env.NODE_ENV === 'production'
+  ? 'https://client.secretdiary.org'
+  : (process.env.NODE_ENV === 'development' 
+  ? 'http://localhost:80' : 'https://server.secretdiary.org');
+
+const handleClickUpdate = () => {
+ 
+    axios.put( `${url}/userupdate`, {
+    id: Number(window.sessionStorage.getItem('id')),
+    password: (password==='')?sessionStorage.getItem('password'):password,
+    name: (name==='')?sessionStorage.getItem('name'):name
     })
-    .then(res => {
-      if(res.data.user.password === password)
-      setChangePassword(false)
-    })
-  }
-  const passwordChange = () => {
-    if(password === verify) {
-      axios.put(`http://localhost:3001/user`, {
-        id: user.id,
-        password: user.password
-      })
-      .then(res => {
-        history(-1);
-      })
-    }
-  }
+    .then(history('/'))
+    .catch((e) => console.error(e));
+  
+}
+ 
   return (
-    <React.Fragment>
-      <NavBar />
-      <Wrap>
-      <Profile>
-        <PWrap>
-          <Blogtitle placeholder={user.name}></Blogtitle>
-        </PWrap>
-      </Profile>
-
-      <BottomWrap>
-        <ModifyPassword onClick={modalPassword}>비밀번호 변경</ModifyPassword>
-        {changePassword === true ? (
-            <ModalBackdrop onClick={modalPassword}>
-              <ModalView onClick={(e) => e.stopPropagation()}>
-                <ModalContainer>
-                  {checkPassword === true ?  <PasswordInfo placeholder='password'
-                      onChange={(e) => {
-                        setPassword(e.target.value);
-                      }}
-                    ></PasswordInfo> :
-                  <WrapPassword>
-                  <PasswordInfo placeholder='password'
-                      onChange={(e) => {
-                        setPassword(e.target.value);
-                      }}
-                    ></PasswordInfo>
-                    <PasswordInfo placeholder='verify'
-                      onChange={(e) => {
-                        setVerify(e.target.value);
-                      }}
-                    ></PasswordInfo>
-                    </WrapPassword>
-                    }
-
-                  {checkPassword === true?
-                  <ModalButton onClick={checkHandler}>변경</ModalButton>
-                  :<ModalButton onClick={passwordChange}>확인</ModalButton>}
-                
-                </ModalContainer>
-              </ModalView>
-            </ModalBackdrop>
-          ) : null}
-
-        <Modify onClick={modify}>수정</Modify>
-
-        <Cancel onClick={cancel}>취소</Cancel>
-
-        <Withdraw onClick={modalIsOpen}>회원탈퇴</Withdraw>
-        {isOpen === true ? (
-            <ModalBackdrop onClick={modalIsOpen}>
-              <ModalView onClick={(e) => e.stopPropagation()}>
-                <ModalContainer>
-                  <ModalBtn onClick={withdraw}>회원탈퇴하시겠습니까?</ModalBtn>
-                </ModalContainer>
-              </ModalView>
-            </ModalBackdrop>
-          ) : null}
-      </BottomWrap>
-      </Wrap>
-    </React.Fragment>
+  
+          <div className='signup'>
+         
+            <h1 className="title">User Update</h1>
+            <div>
+              <input type="password" onChange={(e) => setPassword(e.target.value)} placeholder="패스워드 "></input>
+            </div>
+            <div>
+              <input type="password" onChange={(e) => setPassword(e.target.value)} placeholder="패스워드 확인"></input>
+            </div>
+            <div>
+              <input type="nickname" onChange={(e) => setName(e.target.value)} placeholder = {name}></input>
+            </div>
+            <div>
+              <input type="email"  value = {email} disabled></input>
+            </div>
+            <div>
+              <input type="text"  value = {created_at} disabled></input>
+            </div>
+            <div>
+              <button onClick={handleClickUpdate}>회원정보수정</button>
+            </div>
+            <div className="errormessage">{errormessage}</div>
+            <div className="errormessage">{errormessage2}</div>
+          
+        </div>
+   
   );
 };
-
+const Signup = styled.div`
+  text-align: center;
+  background-color: black;
+  margin: 10% auto;
+`
 const Wrap = styled.div`
   width: 768px;
   margin: 0 auto;
@@ -305,4 +268,3 @@ overflow: hidden;
 
 
 export default MyPage;
-

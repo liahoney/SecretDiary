@@ -22,14 +22,14 @@ const Navbar = ({ authenticate, setAuthenticate , handleLogout, isLogin}) => {
         </button>
         <div className="side-menu-list" id="menu-list">
           
-            <li>
+          
           <button ><a href="/">로그인</a></button>     
          <button> <a href="/diary">일기쓰기</a> </button>
          <button><a href="/mydiary">나의일기</a> </button>
-          <button><a href="/friends">친구목록</a></button>
+          {/* <button><a href="/friends">친구목록</a></button> */}
           <button><a href="/mypage">마이페이지</a></button>
           <button><a href="/logout">로그아웃</a></button>
-          </li>
+          
           
         </div>
       </div>
@@ -37,17 +37,18 @@ const Navbar = ({ authenticate, setAuthenticate , handleLogout, isLogin}) => {
         <div className="burger-menu hide">
           <FontAwesomeIcon icon={faBars} onClick={() => setWidth(250)} />
         </div>
-        <span>
+        <div className='wow'>
     {
-        isLogin === false ? <nav>
+        isLogin === false ? <nav className='wo'>
             
             <a href="/signup">회원가입</a>
             <a href="/">로그인</a>
+            {/* <button onClick={handleLogout}>Logout</button> */}
             
         </nav> : 
         <nav>
             <a href="/diary">다이어리</a>
-            <a href="/friends">친구목록</a>
+            {/* <a href="/friends">친구목록</a> */}
             <a href="/mypage">마이페이지</a>
             <a href="/main">메인페이지</a>
             <a href="/mydiary">마이다이어리</a>
@@ -56,18 +57,18 @@ const Navbar = ({ authenticate, setAuthenticate , handleLogout, isLogin}) => {
             
         </nav>
         }
-    </span>
-        {isLogin ? (
-          <div onClick={() => setAuthenticate(false)}>
+    </div>
+        {/* {isLogin ? (
+          <div  onClick={() => setAuthenticate(false)}>
             <FontAwesomeIcon icon={faUser} />
-            <span>로그아웃</span>
+            <span>로그아웃할래?</span>
           </div>
         ) : (
           <div onClick={() => navigate("/main")}>
             <FontAwesomeIcon icon={faUser} />
-            <span>로그인이다</span>
+            <span>로그인해야지</span>
           </div>
-        )}
+        )} */}
       </div>
 
       <div className="nav-logo">

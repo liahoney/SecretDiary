@@ -9,6 +9,20 @@ import cloudy from "../image/weather/3.png"
 import windy from "../image/weather/4.png"
 import snowy from "../image/weather/5.png"
 
+
+// const {
+//   NODE_ENV,
+//   // REACT_APP_API_DOMAIN,
+//   // REACT_APP_EC2_HTTP,
+//   // REACT_APP_EC2_HTTPS,
+// } = process.env;
+// // export const url =
+// //   NODE_ENV === 'development' ? REACT_APP_EC2_HTTP : REACT_APP_API_DOMAIN;
+
+// const url =
+//   process.env.NODE_ENV === 'production'
+//     ? 'https://client.secretdiary.org'
+//     : 'https://server.secretdiary.org';
 const colors = [
     "red",
     "green",
@@ -30,6 +44,11 @@ const {
   // export const url =
   //   NODE_ENV === 'development' ? REACT_APP_EC2_HTTP : REACT_APP_API_DOMAIN;
 
+  const url =
+  process.env.NODE_ENV === 'production'
+    ? 'https://client.secretdiary.org'
+    : (process.env.NODE_ENV === 'development' 
+    ? 'http://localhost:80' : 'https://server.secretdiary.org');
 function Diary() {
 //날짜 함수 시작
 const Today = () => {
@@ -130,11 +149,7 @@ const userImage = ''
 
   
   //다이어리 텍스트 함수 끝
-  const url =
-  process.env.NODE_ENV === 'production'
-    ? 'https://client.secretdiary.org'
-    : (process.env.NODE_ENV === 'development' 
-    ? 'http://localhost:80' : 'https://server.secretdiary.org');
+ 
 
   const register =async () => {
     console.log('ENV? = ', NODE_ENV);
@@ -177,11 +192,11 @@ const userImage = ''
     
   // };
   
-  axios.post(`${url}/imageUpload`, formData)
+  axios.post(`http://localhost:80/imageUpload`, formData)
   .then( res => {
     console.log('res = ',res)
     axios
-    .post(`${url}/diary/cdiary`, {
+    .post(`http://localhost:80/diary/cdiary`, {
       title: title,
       content: content,
       weather: currentClick,
@@ -308,7 +323,7 @@ return (
                 id="typeContent"
             />
         </Content>
-        <Counter id="counter">({null} / 최대 150자)</Counter>
+        {/* <Counter id="counter">({null} / 최대 150자)</Counter> */}
         </Main3>
         <Buttons>    
             <Button onClick={register}>등록하기</Button>

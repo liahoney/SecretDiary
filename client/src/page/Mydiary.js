@@ -54,7 +54,7 @@ if(contentsData.length > 0) {
     <div className="diary-div">
     {contentsData.map(data => (
       // (data.id < 10) ? (
-        <div key={data.id}>
+        <div className='hi' key={data.id}>
           <img src={require(`../public/img/${data.imgmain}`)}  className="diary-card" style={{ margin: "auto" }}></img>
                  
                   <h1>제목 : {data.title}</h1>
@@ -71,7 +71,7 @@ if(contentsData.length > 0) {
 } else { // 조회 데이터 존재하지 않을 경우
   return (
       <div>
-          <button onClick={dataList}> 불러오기 </button>
+          <button onClick={dataList}> 내 일기장 불러오기 </button>
       </div>
   )
 }
