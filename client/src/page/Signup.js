@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 // import { url } from '../util/getUrl';
+import img from "../image/signup.svg";
+import { Text } from "../element"
 
 const {
   NODE_ENV,
@@ -18,7 +20,7 @@ const url =
     ? 'https://client.secretdiary.org'
     : 'https://server.secretdiary.org';
 
-const Signup = () => {
+const Signup = (props) => {
   const [user, setUser] = useState('');
   const [userName, setUserName] = useState('');
   const [pwd, setPwd] = useState('');
@@ -34,7 +36,10 @@ const Signup = () => {
       return;
     } else if (pwd === verPwd) {
       axios
-        .post(`${url}/signup`, {
+        .post(
+          // `${url}/signup`, 
+          `https://server.secretdiary.org/signup`,
+          {
           user: user,
           userName: userName,
           password: pwd,
@@ -46,40 +51,57 @@ const Signup = () => {
     }
   };
   const cancle = () => {
-    history('/page/Login');
+    history('/');
   };
   return (
-    <div>
-      <Container>
-        <Box>
-          <Text>회원가입</Text>
-          <SignupInput
+    <Container>
+      <Box1>
+        <CharImg
+        width="168px" 
+        src ={img}/>
+        <WelcText>입학을 환영합니다!</WelcText>
+      </Box1>
+
+      <Box2>
+        <Text bold margin="5px" size="16px">
+          회원가입
+        </Text>
+          <LoginInput 
             value={user}
             placeholder='이메일을 입력하세요'
             onChange={(e) => setUser(e.target.value)}
           />
-          <SignupInput
+          <LoginInput
             value={userName}
             placeholder='닉네임을 입력하세요'
             onChange={(e) => setUserName(e.target.value)}
           />
-          <SignupInput
+          <LoginInput
             value={pwd}
             placeholder='비밀번호를 입력하세요'
-            type='password'
+            type = 'password'
             onChange={(e) => setPwd(e.target.value)}
           />
-          <SignupInput
+          <LoginInput 
             value={verPwd}
             placeholder='비밀번호를 한번 더 입력해주세요'
-            type='password'
+            type = 'password'
             onChange={(e) => setVerPwd(e.target.value)}
           />
-          <SignupButton onClick={signup}>회원가입</SignupButton>
-          <SignupButton onClick={cancle}>취소</SignupButton>
-        </Box>
-      </Container>
-    </div>
+          <LoginButton onClick={signup}>
+            회원가입
+          </LoginButton>
+          <LoginButton onClick={cancle}>
+            취소
+          </LoginButton>
+          <Text  blod margin= "10px 10px 5px 142px" color="#868e96" size="12pt">
+            계정이 이미 있으신가요? {" "}
+            <TextButton size="12pt" onClick={cancle}>
+              로그인
+            </TextButton>
+          </Text>
+      </Box2>
+    </Container>
   );
 };
 
@@ -90,40 +112,76 @@ const Container = styled.div`
   align-items: flex-start;
 `;
 
-const Box = styled.div`
+const Box1 = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 225px;
+  height: 560px;
+  background-color: #f1f3f5;
+  position: absolute;
+  align-items: center;
+  z-index: 0;
+`;
+const Box2 = styled.div`
   margin-top: 70px;
-  margin-bottom: 70px;
-  align-items: flex-first;
-  border: 1px solid black;
+  margin-left: 250px;
   z-index: 10;
 `;
 
-const Text = styled.p`
-  font-size: 16pt;
-  font-weight: bold;
-  margin: 5px;
-  border: 1px solid black;
+const CharImg = styled.img`
+  position: absolute;
+  margin-left: 30px;
+  margin-top: 180px;
 `;
 
-const SignupInput = styled.input`
+const WelcText = styled.text`
+  position: absolute;
+  margin-top: 300px;
+  margin-left: 50px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #495057;
+`;
+
+const LoginInput = styled.input`
   width: 340px;
   height: 48px;
-  border: 1px solid black;
+  border-radius: 0px;
   padding: 16px;
   margin: 5px;
   box-sizing: border-box;
+  border: 1px solid #dcdddd;
   font-size: 16px;
-  background-color: yellow;
+  color: ${(props) => props.theme.main_black};
+  background-color: ${(props) => props.theme.main_white};
+  &:hover {
+  }
 `;
 
-const SignupButton = styled.button`
+const LoginButton = styled.button`
   width: 340px;
   height: 48px;
-  border: 1px solid black;
+  border-radius: 0px;
   padding: auto;
+  margin: 5px;
+  border: none;
+  outline: none;
   font-size: 16px;
   font-weight: bold;
-  :hover {
+  color: ${(props) => props.theme.main_white};
+  background-color: ${(props) => props.theme.main_green};
+  &:hover {
+    cursor: pointer;
+    background-color: ${(props) => props.theme.main_green_h};
+  }
+`;
+
+const TextButton = styled.span`
+  color: ${(props) => props.theme.main_green};
+  font-weight: bold;
+  &:hover {
+    text-decoration: underline;
     cursor: pointer;
   }
 `;

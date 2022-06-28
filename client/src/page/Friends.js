@@ -11,6 +11,7 @@ const Friends = () => {
 export default Friends;
 
 
+
 // import React, { useRef, useState } from 'react';
 // import FriendList from '../component/FriendList';
 
